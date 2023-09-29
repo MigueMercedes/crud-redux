@@ -1,13 +1,13 @@
 {
   "products": [
     {
-      "name": "dasdasdasd",
-      "price": "22222",
+      "name": "korea food",
+      "price": "999",
       "id": 1
     },
     {
-      "name": "dadasdasd",
-      "price": "231231232",
+      "name": "dominican food",
+      "price": "12",
       "id": 2
     },
     {
@@ -19,6 +19,21 @@
       "name": "adsadsagfdsgds",
       "price": "312312",
       "id": 4
+    },
+    {
+      "name": "japanense fod",
+      "price": "2121",
+      "id": 5
+    },
+    {
+      "name": "Pizza ",
+      "price": "218381",
+      "id": 6
+    },
+    {
+      "name": "lavanda",
+      "price": "231231",
+      "id": 7
     }
   ]
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 //Redux Actions
 import { createProductAction } from '../actions/productsActions'
 import { ClipLoader } from 'react-spinners'
+import { showAlertAction, hideAlertAction } from '../actions/alertAction'
 
 const override = {
 	display: 'block',
@@ -24,7 +25,9 @@ function NewProduct() {
   const navigate = useNavigate()
 
 	// Access the store state
-	const stateRedux = useSelector((state) => state.products)
+	const loading = useSelector((state) => state.products.loading)
+	const error = useSelector((state) => state.products.error)
+	const alert = useSelector((state) => state.alert.alert)
 
 	// call the action
 	const addProduct = (product) => dispatch(createProductAction(product))
@@ -34,8 +37,17 @@ function NewProduct() {
 		e.preventDefault()
 
 		// valid form
-		if (name.trim === '' || price <= 0) return
+		if (name.trim === '' || price <= 0) {
+      const msgAlert = {
+        msg: 'both fields are required',
+        classes: 'alert alert-danger text-center text-uppercase p-3'
+      }
+      dispatch( showAlertAction(msgAlert) )
+      return
+    }
+
 		// if not a errors
+    dispatch( hideAlertAction())
 
 		// create a new product
 		addProduct({
@@ -53,6 +65,8 @@ function NewProduct() {
 				<div className="card">
 					<div className="card-body">
 						<h2 className="text-center mb-4 font-weight-bold">New Producto</h2>
+
+            {alert && <p className={alert.classes} >{alert.msg}</p>}
 
 						<form onSubmit={submitNewProduct}>
 							<div className="form-group">
@@ -87,7 +101,7 @@ function NewProduct() {
 							</button>
 						</form>
 
-						{stateRedux.loading && (
+						{loading && (
 							<ClipLoader
 								cssOverride={override}
 								size={100}
@@ -95,7 +109,7 @@ function NewProduct() {
 							/>
 						)}
 
-            {stateRedux.error && (
+            {error && (
               <p 
                 className='alert alert-danger text-center p-2 mt-3'
               >

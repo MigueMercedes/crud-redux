@@ -8,7 +8,9 @@ import {
   DELETE_PRODUCT,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_ERROR,
-  EDIT_PRODUCT, 
+  GET_ONE_PRODUCT,
+  EDIT_PRODUCT,
+  EDIT_PRODUCT_SUCCESS, 
 } from '../types'
 import axiosClient from '../config/axios'
 import Swal from 'sweetalert2'
@@ -80,7 +82,7 @@ export function getProductsAction() {
       setTimeout( async () => {
         const response = await axiosClient.get('/products')
         dispatch( getProductsSuccess(response.data) ) 
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.log(error)
       dispatch( getProductError ())
@@ -104,15 +106,37 @@ const getProductError = () => ({
 })
 
 // Select and edit product
-export function editProductAction(product) {
+export function getEditProductAction(product) {
   return async (dispatch) => {
-    dispatch( editProduct(product) )
-    
+    dispatch( getEditProduct(product) )
   }
 }
 
-const editProduct = product => ({
+const getEditProduct = product => ({
+  type: GET_ONE_PRODUCT,
+  payload: product
+})
+
+// edit a product in the API and state
+export function editProductAction(product) {
+  return async (dispatch) => {
+    dispatch( editProduct() )
+
+    try {
+      await axiosClient.put(`/products/${product.id}`, product)
+      dispatch( editProductSuccess(product))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+const editProduct = () => ({
   type: EDIT_PRODUCT,
+})
+
+const editProductSuccess = product => ({
+  type: EDIT_PRODUCT_SUCCESS,
   payload: product
 })
 

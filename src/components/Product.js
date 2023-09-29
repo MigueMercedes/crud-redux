@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 
 // Redux
 import { useDispatch } from "react-redux"
-import { deleteProductAction, createProductAction, editProductAction  } from "../actions/productsActions";
+import { deleteProductAction, getEditProductAction  } from "../actions/productsActions";
 
 function Product({product}) {
 
@@ -35,7 +35,7 @@ function Product({product}) {
 
   // Function to redirect the user on a schedule automatically
   const redirectToEditProduct = (product) => {
-    dispatch( editProductAction(product) )
+    dispatch( getEditProductAction(product) )
     navigate(`/products/edit/${product.id}`)
   }
 

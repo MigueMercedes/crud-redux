@@ -1,17 +1,46 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { editProductAction } from '../actions/productsActions'
 
-function NewProduct() {
+function EditProduct() {
 
-  const stateRedux = useSelector( state => state.products)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [product, setProduct] = useState({
+    name: '',
+    price: ''
+  })
+  
+  const productToEdit = useSelector( state => state.products.editProduct)
+  
+  useEffect(() => {
+    setProduct(productToEdit)
+  }, [productToEdit]);
+
+  const onChangeForm = e => {
+    setProduct({
+      ...product,
+      [e.target.name]: e.target.value 
+    })
+  }
+
+  const submitEditProduct = e => {
+    e.preventDefault()
+
+    dispatch( editProductAction(product))
+    navigate('/')
+  }
+
+  const { name, price } = product
+  
 
 	return (
 		<div className="row justify-content-center">
 			<div className="col-md-8">
 				<div className='card'>
-          {!stateRedux.editProduct || !stateRedux ? (
+          {!productToEdit ? (
             <div 
               className='d-flex flex-column justify-content-center align-content-center w-50 mx-auto' 
               style={{height: "400px"}}>
@@ -30,14 +59,18 @@ function NewProduct() {
                 Edit Product
               </h2>
 
-              <form>
+              <form
+                onSubmit={submitEditProduct}
+              >
                 <div className='form-group'>
                   <label>Product Name</label>
                   <input 
                     type='text'
                     className='form-control'
                     placeholder='Enter Product'
-                    value={stateRedux.editProduct.name}
+                    name='name'
+                    value={name}
+                    onChange={onChangeForm}
                   />
                 </div>
 
@@ -47,7 +80,9 @@ function NewProduct() {
                     type='text'
                     className='form-control'
                     placeholder='Enter Price'
-                    value={stateRedux.editProduct.price}
+                    name='price'
+                    value={price}
+                    onChange={onChangeForm}
                   />
                 </div>
 
@@ -66,4 +101,4 @@ function NewProduct() {
 	)
 }
 
-export default NewProduct
+export default EditProduct

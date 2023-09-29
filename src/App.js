@@ -15,6 +15,7 @@ function App() {
 			<div className="container">
 				<Routes>
 					<Route path="/" element={<Products />} />
+					<Route path="/products" element={<Products />} />
           <Route path='/products/new' element={<NewProduct />} />
           <Route path='/products/edit/:id' element={<EditProduct />} />
 				</Routes>
